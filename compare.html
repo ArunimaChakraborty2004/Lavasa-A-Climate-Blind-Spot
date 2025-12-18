@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lavasa: Before & After</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+  <!-- Navigation Bar -->
+  <nav class="fixed top-0 left-0 w-full bg-white shadow z-50" style="background-color: #fff !important; color: #1a202c !important; opacity: 1 !important;">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="index.html" class="font-bold text-red-700 hover:text-red-800 transition">Lavasa Dashboard</a>
+      <div class="space-x-4 text-sm font-semibold">
+        <a href="index.html#timeline" class="hover:text-red-600 text-gray-900">Timeline</a>
+        <a href="index.html#charts" class="hover:text-red-600 text-gray-900">Charts</a>
+        <a href="index.html#violations" class="hover:text-red-600 text-gray-900">Violations</a>
+        <a href="index.html#missing" class="hover:text-red-600 text-gray-900">What’s Missing</a>
+        <a href="compare.html" class="hover:text-red-600 text-gray-900">Compare</a>
+        <a href="map.html" class="hover:text-red-600 text-gray-900">Map</a>
+      </div>
+    </div>
+  </nav>
+  <div class="pt-16">
+
+    <!-- Title + Intro -->
+    <section class="py-16 bg-white text-center">
+      <h2 class="text-4xl font-bold text-red-700 mb-4">Lavasa: Before & After</h2>
+      <p class="text-lg text-gray-700 max-w-2xl mx-auto">
+        Lavasa was once a symbol of urban ambition. Today, it stands as a cautionary tale. This page visually compares its original promise with its current reality.
+      </p>
+    </section>
+
+    <!-- Side-by-Side Video Comparison -->
+    <section class="py-16 bg-gray-100">
+      <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-8">
+
+        <!-- Pre-Lavasa Video -->
+        <div class="bg-white p-6 rounded shadow text-center">
+          <h3 class="text-2xl font-bold text-green-700 mb-4">🌄 Lavasa Then</h3>
+          <video controls class="w-full rounded shadow">
+            <source src="prelavasacity.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <p class="mt-4 text-gray-700">
+            Promotional footage showcasing Lavasa’s vision: luxury villas, waterfronts, and smart city planning.
+          </p>
+        </div>
+
+        <!-- Post-Lavasa Video -->
+        <div class="bg-white p-6 rounded shadow text-center">
+          <h3 class="text-2xl font-bold text-red-700 mb-4">🏚️ Lavasa Now</h3>
+          <video controls class="w-full rounded shadow">
+            <source src="postlavasacity.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          <p class="mt-4 text-gray-700">
+            Recent footage showing abandoned infrastructure, landslide zones, and dried springs.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Quote Carousel -->
+    <section class="py-16 bg-white text-center">
+      <h3 class="text-2xl font-bold mb-6">Voices Then vs Now</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+
+        <!-- Then -->
+        <blockquote class="bg-green-50 p-6 rounded shadow text-left">
+          <p class="italic text-lg">“Lavasa will redefine urban living in India.”</p>
+          <span class="block mt-2 font-semibold text-green-700">– Project Brochure, 2005</span>
+        </blockquote>
+
+        <!-- Now -->
+        <blockquote class="bg-red-50 p-6 rounded shadow text-left">
+          <p class="italic text-lg">“Many springs in the region have dried.”</p>
+          <span class="block mt-2 font-semibold text-red-700">– Leelabai, Mugaon village</span>
+        </blockquote>
+
+      </div>
+    </section>
+
+    <!-- Closing Reflection -->
+    <section class="py-20 bg-black text-white text-center">
+      <h2 class="text-3xl font-bold mb-4">A City’s Collapse, A Climate Signal</h2>
+      <p class="text-lg max-w-2xl mx-auto">
+        Lavasa’s transformation from dream to disaster is more than urban decay—it’s a warning. This visual contrast reveals what unchecked ambition and ignored data can cost. What other cities are on this path?
+      </p>
+    </section>
+
+  </div>
+</body>
+</html>

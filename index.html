@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en" x-data>
+<head>
+  <meta charset="UTF-8">
+  <title>Ghost Emissions – Lavasa's Silent Climate Cost</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  
+  <!-- 🔴 Custom Cursor -->
+  <style>
+    body {
+      cursor: none; /* hide default */
+    }
+    .cursor {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #dc2626; /* red outline */
+      border-radius: 50%;
+      position: fixed;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      transition: transform 0.15s ease-out, background 0.3s ease;
+      z-index: 9999;
+    }
+    .cursor-follower {
+      width: 36px;
+      height: 36px;
+      border: 2px solid rgba(220,38,38,0.4);
+      border-radius: 50%;
+      position: fixed;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      transition: transform 0.25s ease-out;
+      z-index: 9998;
+    }
+    a:hover ~ .cursor,
+    button:hover ~ .cursor {
+      transform: translate(-50%, -50%) scale(1.6);
+      background: rgba(220,38,38,0.2);
+    }
+    
+    .fade-city {
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 60%, transparent 100%);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 40%;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .float { animation: float 3s ease-in-out infinite; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0);}
+      50% { transform: translateY(-12px);}
+    }
+    .timeline-dot {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(220,38,38,0.7);}
+      50% { box-shadow: 0 0 0 8px rgba(220,38,38,0);}
+    }
+    
+    /* Interactive hover effects */
+    .interactive-card {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .interactive-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(220,38,38,0.15);
+    }
+    
+    /* Enhanced button effects */
+    .btn-interactive {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-interactive::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(220,38,38,0.2), transparent);
+      transition: left 0.5s;
+    }
+    .btn-interactive:hover::before {
+      left: 100%;
+    }
+    
+    /* Scroll-triggered animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Enhanced scroll animations */
+    .slide-up {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .slide-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .slide-down {
+      opacity: 0;
+      transform: translateY(-50px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .slide-down.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .slide-left {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .slide-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    .slide-right {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .slide-right.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    
+    .scale-in {
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .scale-in.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+    
+    .rotate-in {
+      opacity: 0;
+      transform: rotate(-5deg) scale(0.9);
+      transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .rotate-in.visible {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+    
+    /* Scroll direction effects */
+    .scrolling-down .slide-up {
+      transform: translateY(30px);
+    }
+    
+    .scrolling-up .slide-down {
+      transform: translateY(-30px);
+    }
+    
+    /* Staggered animations for grid items */
+    .stagger-item:nth-child(1) { transition-delay: 0.1s; }
+    .stagger-item:nth-child(2) { transition-delay: 0.2s; }
+    .stagger-item:nth-child(3) { transition-delay: 0.3s; }
+    .stagger-item:nth-child(4) { transition-delay: 0.4s; }
+    .stagger-item:nth-child(5) { transition-delay: 0.5s; }
+    .stagger-item:nth-child(6) { transition-delay: 0.6s; }
+    
+    /* Parallax effect for background elements */
+    .parallax {
+      transform: translateZ(0);
+      will-change: transform;
+    }
+    
+    /* Hero section animations */
+    .hero-particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 1;
+    }
+    
+    .particle {
+      position: absolute;
+      background: radial-gradient(circle, rgba(220,38,38,0.6) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: float-particle 8s ease-in-out infinite;
+    }
+    
+    .particle:nth-child(1) { width: 4px; height: 4px; left: 10%; animation-delay: 0s; }
+    .particle:nth-child(2) { width: 6px; height: 6px; left: 20%; animation-delay: 1s; }
+    .particle:nth-child(3) { width: 3px; height: 3px; left: 30%; animation-delay: 2s; }
+    .particle:nth-child(4) { width: 5px; height: 5px; left: 40%; animation-delay: 3s; }
+    .particle:nth-child(5) { width: 4px; height: 4px; left: 50%; animation-delay: 4s; }
+    .particle:nth-child(6) { width: 6px; height: 6px; left: 60%; animation-delay: 5s; }
+    .particle:nth-child(7) { width: 3px; height: 3px; left: 70%; animation-delay: 6s; }
+    .particle:nth-child(8) { width: 5px; height: 5px; left: 80%; animation-delay: 7s; }
+    
+    @keyframes float-particle {
+      0%, 100% { 
+        transform: translateY(100vh) scale(0.5); 
+        opacity: 0;
+      }
+      10% { 
+        opacity: 1; 
+        transform: translateY(90vh) scale(1);
+      }
+      90% { 
+        opacity: 1; 
+        transform: translateY(10vh) scale(1);
+      }
+    }
+    
+    /* Enhanced hero text animations */
+    .hero-title {
+      animation: hero-title-glow 3s ease-in-out infinite alternate;
+      text-shadow: 0 0 20px rgba(220,38,38,0.5);
+    }
+    
+    @keyframes hero-title-glow {
+      0% { text-shadow: 0 0 20px rgba(220,38,38,0.5); }
+      100% { text-shadow: 0 0 30px rgba(220,38,38,0.8), 0 0 40px rgba(220,38,38,0.3); }
+    }
+    
+    .hero-subtitle {
+      animation: hero-subtitle-pulse 4s ease-in-out infinite;
+    }
+    
+    @keyframes hero-subtitle-pulse {
+      0%, 100% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+    
+    /* Background animation */
+    .hero-bg-animation {
+      animation: hero-bg-zoom 20s ease-in-out infinite;
+    }
+    
+    @keyframes hero-bg-zoom {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.1) rotate(1deg); }
+    }
+    
+    /* Floating elements */
+    .floating-element {
+      animation: float-slow 6s ease-in-out infinite;
+    }
+    
+    @keyframes float-slow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      33% { transform: translateY(-15px) rotate(1deg); }
+      66% { transform: translateY(-8px) rotate(-1deg); }
+    }
+    
+    /* Enhanced button animations */
+    .hero-cta-button {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .hero-cta-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+    
+    .hero-cta-button:hover::before {
+      left: 100%;
+    }
+    
+    .hero-cta-button:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 20px 40px rgba(220,38,38,0.4);
+    }
+    
+    /* Scroll indicator pulse */
+    .scroll-indicator {
+      animation: scroll-pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes scroll-pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body class="bg-gray-900 text-white">
+<!-- Navigation Bar -->
+<nav class="fixed top-0 left-0 w-full bg-white shadow z-50" style="background-color: #fff !important; color: #1a202c !important; opacity: 1 !important;">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+    <!-- Dashboard title as a link to index.html -->
+    <a href="index.html" class="font-bold text-red-700 hover:text-red-800 transition">Lavasa Dashboard</a>
+    <div class="space-x-4 text-sm font-semibold">
+      <a href="#timeline" class="hover:text-red-600 text-gray-900">Timeline</a>
+      <a href="#charts" class="hover:text-red-600 text-gray-900">Charts</a>
+      <a href="#violations" class="hover:text-red-600 text-gray-900">Violations</a>
+      <a href="#missing" class="hover:text-red-600 text-gray-900">What’s Missing</a>
+      <a href="compare.html" class="hover:text-red-600 text-gray-900">Compare</a>
+      <a href="map.html" class="hover:text-red-600 text-gray-900">Map</a>
+    </div>
+  </div>
+</nav>
+<div class="pt-16">
+  <!-- Hero Section -->
+<section class="relative h-screen flex flex-col justify-center items-center bg-black overflow-hidden" id="hero">
+    <!-- Animated Background Image -->
+    <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover opacity-60">
+  <source src="abandoned.mp4" type="video/mp4">
+</video>
+
+    
+    <!-- Red Overlay with Animation -->
+    <div class="absolute inset-0 bg-red-900 opacity-40"></div>
+    
+    <!-- Floating Particles -->
+    <div class="hero-particles">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+    
+    <!-- Fade City Overlay -->
+    <div class="fade-city"></div>
+    
+    <!-- Floating Decorative Elements -->
+    <div class="absolute top-20 left-10 text-red-400 text-4xl floating-element opacity-30">🌋</div>
+    <div class="absolute top-32 right-16 text-red-400 text-3xl floating-element opacity-40">🏗</div>
+    <div class="absolute bottom-32 left-20 text-red-400 text-2xl floating-element opacity-30">💧</div>
+    <div class="absolute bottom-40 right-24 text-red-400 text-3xl floating-element opacity-35">📊</div>
+    
+    <!-- Main Content -->
+    <div class="relative z-10 text-center text-white">
+      <h1 class="text-5xl font-bold mb-4 slide-down hero-title">Ghost Emissions – Lavasa's Silent Climate Cost</h1>
+      <p class="text-xl italic mb-6 slide-up hero-subtitle">A city built on ambition, undone by neglect</p>
+      
+      <!-- Animated Call-to-Action -->
+      <div class="mt-8 slide-up" style="animation-delay: 1s;">
+        <button class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg font-semibold hero-cta-button floating-element">
+          Explore the Impact
+        </button>
+      </div>
+    </div>
+    
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white opacity-60 floating-element scroll-indicator">
+      <div class="text-center">
+        <div class="text-sm mb-2">Scroll to explore</div>
+        <div class="w-6 h-10 border-2 border-white rounded-full mx-auto relative">
+          <div class="w-1 h-3 bg-white rounded-full mx-auto mt-2 animate-bounce"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+<section class="py-16 bg-white" id="charts">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold mb-6 text-red-700">Lavasa: A Climate Blind Spot</h2>
+    <p class="text-lg text-gray-800">
+      Lavasa was built without emissions monitoring, methane tracking, or ecological accountability. Our dashboard doesn’t just visualize its collapse—we expose what climate data missed. This isn’t just urban storytelling—it’s climate advocacy.
+    </p>
+  </div>
+</section>
+
+<!-- Dream to Disaster Section -->
+<section class="py-16 bg-gray-900 text-white" id="timeline">
+  <div class="max-w-6xl mx-auto px-4">
+    <h2 class="text-4xl font-bold mb-12 text-center text-red-400 slide-down">Lavasa: From Dream to Disaster</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+
+      <!-- Left Column: Key Facts -->
+      <div class="space-y-6">
+        <div class="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-lg interactive-card slide-left hover:border-red-500 transition-colors">
+            <h3 class="text-xl font-semibold mb-2 text-red-300">📍 Project Vision</h3>
+            <p class="text-gray-300">Lavasa was envisioned as India's first private hill station, designed to host 300,000 residents with luxury infrastructure and sustainable planning.</p>
+          </div>
+          <div class="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-lg interactive-card slide-left hover:border-red-500 transition-colors">
+            <h3 class="text-xl font-semibold mb-2 text-red-300">⚠ Collapse Indicators</h3>
+            <ul class="list-disc pl-5 space-y-2 text-gray-300">
+              <li>MoEF issued a stop-work order in 2010</li>
+              <li>Post-factor clearance granted in 2011</li>
+              <li>Bankruptcy filed in 2018</li>
+              <li>Revival plan approved in 2023</li>
+              <li>Landslide killed 1, trapped 2 in 2024</li>
+            </ul>
+          </div>
+          <div class="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-lg interactive-card slide-left hover:border-red-500 transition-colors">
+            <h3 class="text-xl font-semibold mb-2 text-red-300">📉 Reality Check</h3>
+            <p class="text-gray-300">Despite grand ambitions, Lavasa today has fewer than 2,500 residents, minimal public services, and widespread infrastructure decay.</p>
+          </div>
+        </div>
+
+        <!-- Chart Section -->
+<div class="flex flex-col space-y-8 w-full">
+
+  <!-- Horizontal Bar Chart: Population -->
+  <div class="bg-gray-800 border border-gray-700 p-4 rounded-lg shadow-lg slide-right w-full max-w-3xl mx-auto">
+    <h3 class="text-base font-semibold mb-4 text-center text-red-300">Population Projection vs Reality</h3>
+    <div class="flex justify-center">
+      <canvas id="populationChart" class="w-full h-48"></canvas>
+    </div>
+  </div>
+
+  <!-- Timeline and Violations Charts Side by Side -->
+  <div class="flex flex-col md:flex-row md:space-x-8 space-y-8 md:space-y-0 w-full">
+    
+    <!-- Timeline Chart -->
+    <div class="bg-gray-800 border border-gray-700 p-4 rounded-lg shadow-lg slide-right flex-1">
+      <h3 class="text-lg font-semibold mb-4 text-center text-red-300">Timeline of Key Events</h3>
+      <canvas id="timelineChart" class="w-full h-64"></canvas>
+    </div>
+
+    <!-- Violations Chart -->
+    <div class="bg-gray-800 border border-gray-700 p-4 rounded-lg shadow-lg slide-right flex-1 max-w-md mx-auto">
+      <h3 class="text-base font-semibold mb-4 text-center text-red-300">Environmental Violations</h3>
+      <div class="flex justify-center">
+        <canvas id="violationsChart" class="w-full h-64"></canvas>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+  </section>
+
+  <!-- Lavasa Timeline: 2000–2025 -->
+  <section class="py-16 bg-gray-800 text-white" id="timeline-details">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-3xl font-bold mb-8 text-center text-red-400 scale-in">Lavasa Timeline: 2000–2025</h2>
+      <div class="overflow-x-auto">
+        <div class="flex space-x-6 min-w-[800px] md:min-w-full">
+
+          <!-- Timeline Item -->
+          <div class="flex flex-col items-center text-center w-40 slide-up stagger-item">
+            <div class="text-red-400 text-2xl mb-2">🏗</div>
+            <div class="bg-red-900 text-red-200 px-3 py-1 rounded-full font-bold mb-2">2000</div>
+            <p class="text-sm text-gray-300">Lavasa project announced</p>
+          </div>
+
+          <div class="flex flex-col items-center text-center w-40 slide-up stagger-item">
+            <div class="text-yellow-400 text-2xl mb-2">⚖</div>
+            <div class="bg-yellow-900 text-yellow-200 px-3 py-1 rounded-full font-bold mb-2">2010</div>
+            <p class="text-sm text-gray-300">MoEF issues stop-work order</p>
+          </div>
+
+          <div class="flex flex-col items-center text-center w-40 slide-up stagger-item">
+            <div class="text-green-400 text-2xl mb-2">📜</div>
+            <div class="bg-green-900 text-green-200 px-3 py-1 rounded-full font-bold mb-2">2011</div>
+            <p class="text-sm text-gray-300">Post-facto clearance granted</p>
+          </div>
+
+          <div class="flex flex-col items-center text-center w-40 slide-up stagger-item">
+            <div class="text-blue-400 text-2xl mb-2">💸</div>
+            <div class="bg-blue-900 text-blue-200 px-3 py-1 rounded-full font-bold mb-2">2018</div>
+            <p class="text-sm text-gray-300">Bankruptcy filed</p>
+          </div>
+
+          <div class="flex flex-col items-center text-center w-40 slide-up stagger-item">
+            <div class="text-purple-400 text-2xl mb-2">🔄</div>
+            <div class="bg-purple-900 text-purple-200 px-3 py-1 rounded-full font-bold mb-2">2023</div>
+            <p class="text-sm text-gray-300">Revival plan approved</p>
+          </div>
+
+          <div class="flex flex-col items-center text-center w-40 slide-up stagger-item">
+            <div class="text-gray-400 text-2xl mb-2">🌧</div>
+            <div class="bg-gray-700 text-gray-200 px-3 py-1 rounded-full font-bold mb-2">2024</div>
+            <p class="text-sm text-gray-300">Landslide tragedy</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+<section class="py-16 bg-gray-100" id="missing">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <h2 class="text-2xl font-bold mb-4 text-green-700">NASA Data Gap</h2>
+    <p class="text-lg text-gray-700 mb-4">
+      We explored NASA’s Earthdata and found no methane or urban emissions data for Lavasa. This absence itself is a signal—cities like Lavasa fall through the cracks of global climate monitoring.
+    </p>
+    <p class="text-lg font-semibold text-blue-900">
+      We propose Lavasa as a candidate for future satellite-based urban emissions tracking.
+    </p>
+  </div>
+</section>
+<section class="py-16 bg-white" id="map-section">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <!-- Add title above the map -->
+    <h2 class="text-2xl font-bold mb-2 text-blue-700">World Map Explore</h2>
+    <h2 class="text-2xl font-bold mb-6">Lavasa on the Map</h2>
+    <div id="map" class="w-full h-96 rounded shadow"></div>
+  </div>
+</section>
+
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+<script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoiYXJ1bmltYWNoYWsiLCJhIjoiY21lbjU4Z2RuMDdrajJpb3R4b3hscjFzdyJ9.BNCKzVv-UEJhoUaQ_9dxfQ';
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/satellite-streets-v11',
+    center: [73.5069, 18.4088], // Lavasa coordinates
+    zoom: 13
+  });
+</script>
+
+<!-- Impact Cards -->
+<section class="py-16 bg-gray-900 text-white" id="violations">
+  <div class="max-w-4xl mx-auto px-4">
+    <h2 class="text-3xl font-bold mb-8 text-center text-red-400 fade-in">Environmental & Social Violations</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-lg flex items-start interactive-card fade-in hover:border-red-500 transition-colors" data-impact="hill-cutting">
+        <span class="text-3xl mr-4 float">🌄</span>
+        <div>
+          <h3 class="font-bold text-xl mb-2 text-red-300">Hill Cutting</h3>
+          <p class="text-gray-300">Excavation of steep slopes triggered landslide risk</p>
+        </div>
+      </div>
+      <div class="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-lg flex items-start interactive-card fade-in hover:border-red-500 transition-colors" data-impact="water-diversion">
+        <span class="text-3xl mr-4 float">💧</span>
+        <div>
+          <h3 class="font-bold text-xl mb-2 text-red-300">Water Diversion</h3>
+          <p class="text-gray-300">Springs dried, affecting tribal villages</p>
+        </div>
+      </div>
+      <div class="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-lg flex items-start interactive-card fade-in hover:border-red-500 transition-colors" data-impact="land-misuse">
+        <span class="text-3xl mr-4 float">🧑‍🌾</span>
+        <div>
+          <h3 class="font-bold text-xl mb-2 text-red-300">Land Misuse</h3>
+          <p class="text-gray-300">Tribal land acquired without proper consent</p>
+        </div>
+      </div>
+      <div class="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-lg flex items-start interactive-card fade-in hover:border-red-500 transition-colors" data-impact="eia-violations">
+        <span class="text-3xl mr-4 float">📜</span>
+        <div>
+          <h3 class="font-bold text-xl mb-2 text-red-300">EIA Violations</h3>
+          <p class="text-gray-300">Ignored 1994, 2004, 2006 norms</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Quote Carousel -->
+<section class="py-16 bg-gray-800 text-white" x-data="{
+  quotes: [
+    { text: 'Many springs in the region have dried.', author: 'Leelabai, Mugaon village' },
+    { text: 'Lavasa dried our village\'s water source.', author: 'MoEF site report' },
+    { text: 'Lavasa is a ghost city with no clear path to recovery.', author: 'Moneylife' },
+    { text: 'Built faster than it was approved—and nature paid the price.', author: 'India CSR' }
+  ],
+  current: 0,
+  next() { this.current = (this.current + 1) % this.quotes.length },
+  prev() { this.current = (this.current - 1 + this.quotes.length) % this.quotes.length }
+}" x-init="setInterval(() => next(), 4000)">
+  <div class="max-w-3xl mx-auto px-4">
+    <h2 class="text-3xl font-bold mb-8 text-center text-red-400 fade-in">Voices from the Ground</h2>
+    <div class="relative h-40">
+      <template x-for="(quote, idx) in quotes" :key="idx">
+        <div x-show="current === idx" x-transition.opacity.duration.700ms class="absolute inset-0 flex flex-col items-center justify-center">
+          <blockquote class="border-l-4 border-red-500 pl-4 italic text-lg bg-gray-900 border border-gray-700 p-6 rounded-lg shadow-lg interactive-card hover:border-red-500 transition-colors">
+            <span x-text="`“${quote.text}”`" class="text-gray-200"></span>
+            <span class="block mt-2 font-semibold text-red-300" x-text="`– ${quote.author}`"></span>
+          </blockquote>
+        </div>
+      </template>
+    </div>
+    <div class="flex justify-center mt-8 space-x-4">
+      <button @click="prev" class="bg-gray-700 hover:bg-red-600 rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold btn-interactive transition-colors">&lt;</button>
+      <button @click="next" class="bg-gray-700 hover:bg-red-600 rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold btn-interactive transition-colors">&gt;</button>
+    </div>
+  </div>
+</section>
+
+<!-- Financial Collapse -->
+<section class="py-16 bg-gray-900 text-white">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold mb-6 fade-in text-red-400">Financial Collapse</h2>
+    <p class="mb-4 text-lg fade-in text-gray-300">Lavasa filed for bankruptcy in 2018 after years of stalled construction, legal delays, and investor withdrawals.</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+      <div class="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-lg interactive-card fade-in hover:border-red-500 transition-colors" data-stat="debt">
+        <h3 class="text-xl font-bold mb-2 text-red-300">₹5,000+ Cr</h3>
+        <p class="text-gray-300">Debt burden at peak</p>
+      </div>
+      <div class="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-lg interactive-card fade-in hover:border-red-500 transition-colors" data-stat="projected">
+        <h3 class="text-xl font-bold mb-2 text-red-300">300,000</h3>
+        <p class="text-gray-300">Projected population</p>
+      </div>
+      <div class="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-lg interactive-card fade-in hover:border-red-500 transition-colors" data-stat="actual">
+        <h3 class="text-xl font-bold mb-2 text-red-300">~2,500</h3>
+        <p class="text-gray-300">Actual residents today</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Legal Battles -->
+<section class="py-16 bg-gray-800 text-white">
+  <div class="max-w-4xl mx-auto px-4">
+    <h2 class="text-3xl font-bold mb-6 text-center fade-in text-red-400">Legal Battles & Clearance Loopholes</h2>
+    <div class="space-y-6">
+      <div class="bg-gray-900 border border-gray-700 p-6 rounded-lg shadow-lg interactive-card fade-in hover:border-red-500 transition-colors" data-legal="stop-work">
+        <h3 class="text-xl font-bold mb-2 text-red-300">MoEF Stop-Work Order (2010)</h3>
+        <p class="text-gray-300">Lavasa was ordered to halt construction due to lack of environmental clearance and violations of EIA norms.</p>
+      </div>
+      <div class="bg-gray-900 border border-gray-700 p-6 rounded-lg shadow-lg interactive-card fade-in hover:border-red-500 transition-colors" data-legal="post-facto">
+        <h3 class="text-xl font-bold mb-2 text-red-300">Post-Facto Clearance (2011)</h3>
+        <p class="text-gray-300">Despite protests, Lavasa was granted clearance retroactively, setting a dangerous precedent for future developments.</p>
+      </div>
+      <div class="bg-gray-900 border border-gray-700 p-6 rounded-lg shadow-lg interactive-card fade-in hover:border-red-500 transition-colors" data-legal="nclt">
+        <h3 class="text-xl font-bold mb-2 text-red-300">NCLT Proceedings</h3>
+        <p class="text-gray-300">Legal delays and unresolved creditor claims stalled revival efforts for years.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Ghost City Panel -->
+<section class="py-16 bg-gray-900 text-white">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold mb-6 fade-in text-red-400">Lavasa Today: A Ghost City</h2>
+    <p class="mb-4 text-lg fade-in text-gray-300">Once envisioned as a luxury hill station, Lavasa now stands largely abandoned—its villas empty, roads cracked, and dreams forgotten.</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+      <div class="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-lg interactive-card fade-in hover:border-red-500 transition-colors" data-status="infrastructure">
+        <h3 class="text-xl font-bold mb-2 text-red-300">Collapsed Infrastructure</h3>
+        <p class="text-gray-300">Roads, bridges, and villas damaged by landslides and neglect</p>
+      </div>
+      <div class="bg-gray-800 border border-gray-700 p-6 rounded-lg shadow-lg interactive-card fade-in hover:border-red-500 transition-colors" data-status="services">
+        <h3 class="text-xl font-bold mb-2 text-red-300">No Public Services</h3>
+        <p class="text-gray-300">Minimal water, electricity, and healthcare access for remaining residents</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lessons Learned -->
+<section class="py-16 bg-gray-800 text-white">
+  <div class="max-w-3xl mx-auto px-4 text-center">
+    <h2 class="text-3xl font-bold mb-6 fade-in text-red-400">Lessons from Lavasa</h2>
+    <ul class="text-lg space-y-4">
+      <li class="fade-in text-gray-300">• Environmental clearance must precede construction—not follow it</li>
+      <li class="fade-in text-gray-300">• Urban ambition must be matched by ecological accountability</li>
+      <li class="fade-in text-gray-300">• Transparency in land acquisition is non-negotiable</li>
+      <li class="fade-in text-gray-300">• Data gaps hide real damage—monitoring must be proactive</li>
+    </ul>
+  </div>
+</section>
+<section class="py-16 bg-white">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <h2 class="text-2xl font-bold mb-4 text-green-700">A Prototype for Climate Storytelling</h2>
+    <p class="text-lg text-gray-800">
+      This dashboard blends scraped journalism, local impact, and visual analytics to make invisible damage visible. With NASA data integration, it could scale to other blind spots globally—turning overlooked cities into climate case studies.
+    </p>
+  </div>
+</section>
+<section class="py-16 bg-red-50">
+  <div class="max-w-3xl mx-auto px-4 text-center">
+    <h2 class="text-2xl font-bold mb-6 text-red-800">What’s Missing?</h2>
+    <ul class="text-lg text-red-900 space-y-2 mb-6">
+      <li>• No methane emissions data</li>
+      <li>• No satellite-based urban emissions tracking</li>
+      <li>• No public climate dashboard for Lavasa</li>
+      <li>• No integration between journalism and global datasets</li>
+    </ul>
+    <form class="bg-white p-6 rounded shadow max-w-xl mx-auto mt-8">
+  <h3 class="text-xl font-bold mb-4">What else are we missing?</h3>
+  <textarea rows="4" class="w-full border rounded p-2 mb-4" placeholder="Share your thoughts..."></textarea>
+  <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Submit</button>
+</form>
+
+    <div class="inline-block border-2 border-dotted border-red-700 px-6 py-3 rounded font-bold text-red-800 bg-white animate-bounce">
+      What else are we missing—and who’s accountable for finding it?
+    </div>
+  </div>
+</section>
+<section class="py-20 bg-black text-white text-center">
+  <h2 class="text-4xl font-bold mb-4">Lavasa isn’t just a failed city—it’s a climate signal.</h2>
+  <p class="text-lg mb-6">We built this dashboard to expose what data missed. Now it’s your turn to ask: what else are we overlooking?</p>
+  <a href="#missing" class="bg-red-600 px-6 py-3 rounded font-bold hover:bg-red-700">Explore the Blind Spots</a>
+</section>
+
+<footer class="py-10 bg-gray-900 text-white text-center">
+  <div class="max-w-2xl mx-auto px-4">
+    <p class="text-xl font-semibold mb-2">
+      We didn’t just build a dashboard—we built a climate case study.
+    </p>
+    <p>
+      Lavasa shows what happens when urban ambition outpaces ecological accountability. Our project reveals not just what went wrong, but what data never showed. And that’s exactly where NASA’s tools—and our dashboard—can make a difference.
+    </p>
+  </div>
+</footer>
+
+
+  <!-- Custom Cursor Elements -->
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+
+  <!-- Chart.js Script (moved to end of body to avoid overlap and ensure DOM is loaded) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+  // Population Chart
+  new Chart(document.getElementById('populationChart').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: ['Projected', 'Actual'],
+      datasets: [{
+        label: 'Population',
+        data: [300000, 2500],
+        backgroundColor: ['#3b82f6', '#ef4444']
+      }]
+    },
+    options: {
+      responsive: false,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: value => value.toLocaleString()
+          }
+        }
+      }
+    }
+  });
+
+  // Timeline Chart
+  new Chart(document.getElementById('timelineChart'), {
+    type: 'line',
+    data: {
+      labels: ['2000', '2010', '2011', '2018', '2023', '2024'],
+      datasets: [{
+        label: 'Lavasa Events',
+        data: [1, 2, 3, 4, 5, 6],
+        borderColor: '#10b981',
+        backgroundColor: '#d1fae5',
+        fill: false,
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: ctx => [
+              '2000: Project Announced',
+              '2010: MoEF Stop-Work Order',
+              '2011: Post-Facto Clearance',
+              '2018: Bankruptcy Filed',
+              '2023: Revival Plan Approved',
+              '2024: Landslide Tragedy'
+            ][ctx.dataIndex]
+          }
+        }
+      },
+      scales: {
+        y: { display: false }
+      }
+    }
+  });
+
+  // Violations Chart
+  new Chart(document.getElementById('violationsChart'), {
+    type: 'pie',
+    data: {
+      labels: ['Hill Cutting', 'Water Diversion', 'Land Misuse', 'EIA Violations'],
+      datasets: [{
+        data: [30, 25, 20, 25],
+        backgroundColor: ['#f59e0b', '#3b82f6', '#10b981', '#ef4444']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+</script>
+
+  <script>
+    // Custom cursor functionality
+    const cursor = document.querySelector('.cursor');
+    const follower = document.querySelector('.cursor-follower');
+
+    let mouseX = 0, mouseY = 0;
+    let posX = 0, posY = 0;
+
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.style.left = mouseX + 'px';
+      cursor.style.top = mouseY + 'px';
+    });
+
+    function animateFollower() {
+      posX += (mouseX - posX) / 8;
+      posY += (mouseY - posY) / 8;
+      follower.style.left = posX + 'px';
+      follower.style.top = posY + 'px';
+      requestAnimationFrame(animateFollower);
+    }
+    animateFollower();
+
+    // Interactive card effects
+    document.querySelectorAll('.interactive-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'translate(-50%, -50%) scale(1.6)';
+        cursor.style.background = 'rgba(220,38,38,0.2)';
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+        cursor.style.background = 'transparent';
+      });
+      
+      card.addEventListener('click', () => {
+        // Add click effects based on data attributes
+        const year = card.dataset.year;
+        const impact = card.dataset.impact;
+        const stat = card.dataset.stat;
+        const legal = card.dataset.legal;
+        const status = card.dataset.status;
+        
+        if (year) {
+          showYearInfo(year);
+        } else if (impact) {
+          showImpactDetails(impact);
+        } else if (stat) {
+          showStatDetails(stat);
+        } else if (legal) {
+          showLegalDetails(legal);
+        } else if (status) {
+          showStatusDetails(status);
+        }
+      });
+    });
+
+    // Enhanced scroll-triggered animations with direction detection
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const scrollDirection = window.scrollY > lastScrollY ? 'down' : 'up';
+          entry.target.classList.add('visible');
+          
+          // Add direction-specific classes for enhanced effects
+          if (scrollDirection === 'down') {
+            entry.target.classList.add('scroll-down');
+          } else {
+            entry.target.classList.add('scroll-up');
+          }
+        } else {
+          // Remove visible class when element is out of view
+          entry.target.classList.remove('visible', 'scroll-down', 'scroll-up');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all animation elements
+    const animationElements = document.querySelectorAll('.fade-in, .slide-up, .slide-down, .slide-left, .slide-right, .scale-in, .rotate-in');
+    animationElements.forEach(el => {
+      observer.observe(el);
+    });
+
+    // Enhanced scroll handling for smooth animations
+    function updateScrollDirection() {
+      const currentScrollY = window.scrollY;
+      const scrollDirection = currentScrollY > lastScrollY ? 'down' : 'up';
+      
+      // Add scroll direction class to body for global effects
+      document.body.classList.remove('scrolling-down', 'scrolling-up');
+      document.body.classList.add(scrollDirection === 'down' ? 'scrolling-down' : 'scrolling-up');
+      
+      lastScrollY = currentScrollY;
+      ticking = false;
+    }
+
+    function requestTick() {
+      if (!ticking) {
+        requestAnimationFrame(updateScrollDirection);
+        ticking = true;
+      }
+    }
+
+    // Listen for scroll events
+    window.addEventListener('scroll', requestTick, { passive: true });
+
+    // Interactive functions
+    function showYearInfo(year) {
+      const messages = {
+        '2000': 'Lavasa Corporation Limited was incorporated with ambitious plans for India\'s first private hill city.',
+        '2010': 'Ministry of Environment and Forests issued stop-work order citing environmental violations.',
+        '2011': 'Controversial post-facto environmental clearance granted despite ongoing legal challenges.',
+        '2018': 'Lavasa filed for bankruptcy under IBC with debts exceeding ₹5,000 crore.',
+        '2023': 'NCLT approved revival plan, but environmental concerns remain unaddressed.',
+        '2024': 'Recent landslide highlights ongoing environmental risks from hill cutting.'
+      };
+      showNotification(messages[year] || 'Information not available');
+    }
+
+    function showImpactDetails(impact) {
+      const details = {
+        'hill-cutting': 'Excavation of steep slopes without proper geological assessment led to increased landslide risk.',
+        'water-diversion': 'Natural springs were diverted for city development, affecting local tribal communities.',
+        'land-misuse': 'Tribal land was acquired without proper consent or fair compensation.',
+        'eia-violations': 'Multiple Environmental Impact Assessment norms were ignored during construction.'
+      };
+      showNotification(details[impact] || 'Details not available');
+    }
+
+    function showStatDetails(stat) {
+      const stats = {
+        'debt': 'Peak debt reached ₹5,000+ crore, making it one of India\'s largest real estate failures.',
+        'projected': 'Original plan projected 300,000 residents by 2020.',
+        'actual': 'Current population is less than 1% of projections, mostly security and maintenance staff.'
+      };
+      showNotification(stats[stat] || 'Statistics not available');
+    }
+
+    function showLegalDetails(legal) {
+      const legalInfo = {
+        'stop-work': 'MoEF order was based on violations of EIA Notification 1994 and subsequent amendments.',
+        'post-facto': 'Retroactive clearance set dangerous precedent for environmental governance.',
+        'nclt': 'National Company Law Tribunal proceedings have been ongoing since 2018.'
+      };
+      showNotification(legalInfo[legal] || 'Legal information not available');
+    }
+
+    function showStatusDetails(status) {
+      const statusInfo = {
+        'infrastructure': 'Critical infrastructure damage estimated at ₹200+ crore.',
+        'services': 'Basic utilities are minimal, affecting remaining residents\' quality of life.'
+      };
+      showNotification(statusInfo[status] || 'Status information not available');
+    }
+
+    function showNotification(message) {
+      // Create notification element
+      const notification = document.createElement('div');
+      notification.className = 'fixed top-4 right-4 bg-red-600 text-white p-4 rounded-lg shadow-lg z-50 max-w-sm';
+      notification.innerHTML = `
+        <p class="text-sm">${message}</p>
+        <button class="mt-2 text-xs underline" onclick="this.parentElement.remove()">Close</button>
+      `;
+      
+      document.body.appendChild(notification);
+      
+      // Auto-remove after 5 seconds
+      setTimeout(() => {
+        if (notification.parentElement) {
+          notification.remove();
+        }
+      }, 5000);
+    }
+
+    // Enhanced cursor effects for buttons
+    document.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'translate(-50%, -50%) scale(1.6)';
+        cursor.style.background = 'rgba(220,38,38,0.2)';
+      });
+      
+      btn.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+        cursor.style.background = 'transparent';
+      });
+    });
+
+    // Smooth scroll for nav links (optional, for better UX)
+    document.querySelectorAll('nav a[href^="#"]').forEach(link => {
+      link.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          window.scrollTo({
+            top: target.offsetTop - 70, // adjust for nav height if needed
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+  </script>
+</body>
+</html>
+      

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lavasa Satellite Timeline</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    .modal {
+      display: none;
+    }
+    .modal.active {
+      display: flex;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+  <!-- Navigation Bar -->
+  <nav class="fixed top-0 left-0 w-full bg-white shadow z-50" style="background-color: #fff !important; color: #1a202c !important; opacity: 1 !important;">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="index.html" class="font-bold text-red-700 hover:text-red-800 transition">Lavasa Dashboard</a>
+      <div class="space-x-4 text-sm font-semibold">
+        <a href="index.html#timeline" class="hover:text-red-600 text-gray-900">Timeline</a>
+        <a href="index.html#charts" class="hover:text-red-600 text-gray-900">Charts</a>
+        <a href="index.html#violations" class="hover:text-red-600 text-gray-900">Violations</a>
+        <a href="index.html#missing" class="hover:text-red-600 text-gray-900">What’s Missing</a>
+        <a href="compare.html" class="hover:text-red-600 text-gray-900">Compare</a>
+        <a href="map.html" class="hover:text-red-600 text-gray-900">Map</a>
+      </div>
+    </div>
+  </nav>
+  <div class="pt-16">
+
+  <!-- Fullscreen Section Modal -->
+  <div id="sectionModal" class="modal fixed inset-0 bg-black bg-opacity-90 z-50 items-center justify-center p-6 overflow-y-auto">
+    <button onclick="closeSectionModal()" class="absolute top-4 right-4 text-white text-2xl font-bold">✕</button>
+    <div id="modalContent" class="bg-white rounded-lg shadow-lg p-6 max-w-4xl mx-auto text-center">
+      <!-- Content will be injected here -->
+    </div>
+  </div>
+
+  <!-- Title Section -->
+  <section class="py-16 bg-white text-center">
+    <h2 class="text-4xl font-bold text-red-700 mb-4">Lavasa from Above: A Satellite Timeline</h2>
+    <p class="text-lg text-gray-700 max-w-2xl mx-auto">
+      From 2011 to 2025, Lavasa’s terrain transformed. These satellite images reveal the slow erosion of forest cover, expansion of infrastructure, and the ecological cost of unchecked development.
+    </p>
+  </section>
+
+  <!-- Timeline Grid -->
+  <section class="py-16 bg-gray-100">
+    <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <!-- Image Cards -->
+      <script>
+        const timelineData = [
+          {
+            title: "January 2011",
+            image: "photo1.png",
+            caption: "Early terrain with dense vegetation and minimal construction.",
+            insight: "Lavasa is surrounded by thick forest cover. Natural contours are intact, and there’s no visible urban footprint. This marks the baseline before major development began."
+          },
+          {
+            title: "May 2011",
+            image: "photo2.png",
+            caption: "Initial development visible near Dasave and Bhoini.",
+            insight: "Early signs of construction appear near Dasave. Vegetation is still dominant, but road outlines and land clearing begin to emerge."
+          },
+          {
+            title: "December 2011",
+            image: "photo3.png",
+            caption: "Expansion begins near water bodies and hill slopes.",
+            insight: "Construction spreads toward the lake and surrounding hills. Terrain flattening and early deforestation patterns are visible."
+          },
+          {
+            title: "February 2016",
+            image: "photo4.png",
+            caption: "Construction intensifies; forest thinning becomes visible.",
+            insight: "Hill cutting is evident, and vegetation density drops significantly. Urban sprawl begins to dominate the landscape."
+          },
+          {
+            title: "April 2018",
+            image: "photo5.png",
+            caption: "Road networks expand; terrain alteration evident.",
+            insight: "Extensive road networks and fragmented forest patches appear. The natural terrain is reshaped."
+          },
+          {
+            title: "March 2021",
+            image: "photo6.png",
+            caption: "Vegetation loss accelerates; urban footprint deepens.",
+            insight: "Forest cover is sparse, and built-up areas dominate. This marks a tipping point in Lavasa’s ecological degradation."
+          },
+          {
+            title: "May 2025",
+            image: "photo7.png",
+            caption: "Final view shows fragmented terrain and ecological scars.",
+            insight: "Lavasa’s terrain is visibly scarred. Forests are fragmented, water bodies constrained, and infrastructure sprawled."
+          }
+        ];
+
+        document.addEventListener("DOMContentLoaded", () => {
+          const container = document.querySelector(".grid");
+          timelineData.forEach((item) => {
+            const card = document.createElement("div");
+            card.className = "bg-white p-4 rounded shadow text-center cursor-pointer hover:scale-105 transition";
+            card.setAttribute("onclick", `openSectionModal('${item.title}', '${item.image}', '${item.caption}', '${item.insight}')`);
+            card.innerHTML = `
+              <h3 class="text-xl font-semibold text-red-700 mb-2">🗓️ ${item.title}</h3>
+              <img src="${item.image}" alt="${item.title}" class="rounded shadow mb-4" />
+              <p class="text-gray-700 text-sm mb-2">${item.caption}</p>
+              <div class="bg-gray-100 p-3 rounded text-sm text-gray-800">
+                <strong>Map Insight:</strong> ${item.insight}
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        });
+      </script>
+
+    </div>
+  </section>
+
+
+  <!-- Closing Reflection -->
+  <section class="py-20 bg-black text-white text-center">
+    <h2 class="text-3xl font-bold mb-4">A City’s Collapse, Seen from Space</h2>
+    <p class="text-lg max-w-2xl mx-auto">
+      These satellite images reveal more than development—they expose the environmental cost of ambition. Lavasa’s story is a warning. What other cities are on this path?
+    </p>
+  </section>
+
+  <!-- Modal Script -->
+  <script>
+    function openSectionModal(title, imageSrc, caption, insight) {
+      const modal = document.getElementById('sectionModal');
+      const content = document.getElementById('modalContent');
+      content.innerHTML = `
+        <h3 class="text-2xl font-bold text-red-700 mb-4">🗓️ ${title}</h3>
+        <img src="${imageSrc}" alt="${title}" class="rounded shadow mb-4 max-w-full" />
+        <p class="text-gray-700 text-base mb-4">${caption}</p>
+        <div class="bg-gray-100 p-4 rounded text-sm text-gray-800">
+          <strong>Map Insight:</strong> ${insight}
+        </div>
+      `;
+      modal.classList.add('active');
+    }
+
+    function closeSectionModal() {
+      document.getElementById('sectionModal').classList.remove('active');
+      document.getElementById('modalContent').innerHTML = '';
+    }
+  </script>
+
+  </div>
+</body>
+</html>
