@@ -19,9 +19,9 @@ Lavasa’s rapid development and subsequent ecological decline remain largely ab
 
 ## 👥 Team
 - Arunima Chakraborty  
-- Siddharth  
-- Shreya  
-- Ritvik  
+- Vidhi Garg  
+- Alex Johanne Wilson 
+- Ben Thekkeparampil Varghese  
 
 ---
 
